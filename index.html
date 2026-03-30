@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML & CSS 互動教學網</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .code-editor {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .preview-window {
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            min-height: 200px;
+        }
+
+        .sidebar-link.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .card-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        pre {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+
+        .tag-btn {
+            background-color: #374151;
+            color: #e5e7eb;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .tag-btn:hover {
+            background-color: #4b5563;
+            border-color: #60a5fa;
+            color: white;
+        }
+
+        /* 互動調整器專用樣式 */
+        .visual-box {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- 導航列 -->
+    <nav class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-blue-600"><i class="fas fa-code mr-2"></i>WebMaster 教學</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#playground" class="hover:text-blue-600 transition">即時編輯器</a>
+                    <a href="#visual-adjuster" class="hover:text-blue-600 transition">CSS 互動調整器</a>
+                    <a href="#playground" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">開始練習</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄區塊 -->
+    <header class="card-gradient text-white py-20 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6">開啟你的網頁開發之旅</h1>
+            <p class="text-xl opacity-90 mb-10">從零開始學習 HTML5 與 CSS3，打造美觀且具響應式的現代網站。</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#visual-adjuster" class="bg-white text-blue-600 px-8 py-3 rounded-full font-bold shadow-lg hover:bg-gray-100 transition">體驗 CSS 調整器</a>
+                <a href="#playground" class="border-2 border-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-blue-600 transition">立即嘗試代碼</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-4 gap-8">
+        
+        <!-- 側邊欄目錄 -->
+        <aside class="lg:col-span-1">
+            <div class="sticky top-24 space-y-2">
+                <h3 class="font-bold text-gray-500 uppercase text-xs mb-4 px-2">課程內容</h3>
+                <button onclick="showLesson('intro')" class="sidebar-link w-full text-left px-4 py-2 rounded-md hover:bg-gray-200 transition active">什麼是 HTML/CSS?</button>
+                <button onclick="showLesson('html-tags')" class="sidebar-link w-full text-left px-4 py-2 rounded-md hover:bg-gray-200 transition">HTML 常用標籤</button>
+                <button onclick="showLesson('css-box')" class="sidebar-link w-full text-left px-4 py-2 rounded-md hover:bg-gray-200 transition">CSS 盒子模型</button>
+                <button onclick="showLesson('flexbox')" class="sidebar-link w-full text-left px-4 py-2 rounded-md hover:bg-gray-200 transition">Flexbox 佈局</button>
+            </div>
+        </aside>
+
+        <!-- 主要內容區 -->
+        <section class="lg:col-span-3">
+            <!-- 修正：加入被遺漏的 content-area ID 區塊 -->
+            <div id="content-area" class="mb-12 bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                <h2 class="text-3xl font-bold mb-6 text-gray-900">歡迎來到網頁開發的世界</h2>
+                <p class="text-lg leading-relaxed mb-6">
+                    想像你在蓋一棟房子：<br>
+                    <strong class="text-blue-600">HTML (結構)</strong> 是房子的鋼筋水泥與牆壁。<br>
+                    <strong class="text-pink-600">CSS (樣式)</strong> 是房子的油漆與家具。
+                </p>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+                    <p class="text-blue-700"><strong>💡 提示：</strong> 點擊左側目錄切換課程內容，或使用下方工具進行實戰！</p>
+                </div>
+            </div>
+
+            <!-- CSS 互動調整器區塊 -->
+            <div id="visual-adjuster" class="mb-16 bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+                <h3 class="text-2xl font-bold mb-6 flex items-center text-indigo-600">
+                    <i class="fas fa-sliders-h mr-2"></i> CSS 屬性互動調整器
+                </h3>
+                <p class="text-gray-600 mb-8">選擇下方的屬性值，直接觀察中間盒子的變化。這能幫助您理解 CSS 屬性的運作方式。</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- 控制面板 -->
+                    <div class="space-y-4 bg-gray-50 p-4 rounded-lg">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">背景顏色 (Background)</label>
+                            <select id="adj-bg" onchange="updateVisual()" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm p-2">
+                                <option value="#3b82f6">藍色 (Default)</option>
+                                <option value="#ef4444">紅色</option>
+                                <option value="#10b981">綠色</option>
+                                <option value="#f59e0b">橙色</option>
+                                <option value="#8b5cf6">紫色</option>
+                                <option value="#1f2937">深灰色</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">圓角大小 (Border Radius)</label>
+                            <select id="adj-radius" onchange="updateVisual()" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm p-2">
+                                <option value="0px">0px (直角)</option>
+                                <option value="8px">8px (稍微圓角)</option>
+                                <option value="20px">20px (圓角)</option>
+                                <option value="50%">50% (圓形)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">陰影 (Box Shadow)</label>
+                            <select id="adj-shadow" onchange="updateVisual()" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm p-2">
+                                <option value="none">無陰影</option>
+                                <option value="0 4px 6px rgba(0,0,0,0.1)">輕微陰影</option>
+                                <option value="0 10px 15px rgba(0,0,0,0.2)">明顯陰影</option>
+                                <option value="0 20px 25px rgba(0,0,0,0.3)">重陰影</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">透明度 (Opacity)</label>
+                            <select id="adj-opacity" onchange="updateVisual()" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm p-2">
+                                <option value="1">100%</option>
+                                <option value="0.8">80%</option>
+                                <option value="0.5">50%</option>
+                                <option value="0.2">20%</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 預覽區域 -->
+                    <div class="md:col-span-2 flex flex-col items-center justify-center border-2 border-dashed border-gray-200 rounded-xl p-8 bg-white min-h-[300px]">
+                        <div id="visual-target" class="visual-box w-40 h-40 bg-blue-500 flex items-center justify-center text-white font-bold text-center p-4">
+                            觀察我的變化
+                        </div>
+                        <div class="mt-8 w-full">
+                            <p class="text-xs text-gray-400 uppercase font-bold mb-2">生成的 CSS 代碼：</p>
+                            <code id="generated-css" class="block bg-gray-900 text-green-400 p-4 rounded-lg text-sm font-mono whitespace-pre">
+.box {
+  background-color: #3b82f6;
+  border-radius: 0px;
+}</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 實戰編輯器區塊 -->
+            <div id="playground" class="mt-12">
+                <h3 class="text-2xl font-bold mb-4 flex items-center text-blue-600">
+                    <i class="fas fa-keyboard mr-2"></i> 即時實驗室 (Live Playground)
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-[550px]">
+                    <div class="flex flex-col">
+                        <div class="bg-gray-800 text-white px-4 py-2 text-sm rounded-t-lg">
+                            <div class="flex justify-between items-center mb-2 border-b border-gray-700 pb-2">
+                                <span>編輯代碼 (HTML & CSS)</span>
+                                <button onclick="resetCode()" class="text-xs bg-gray-600 px-2 py-1 rounded hover:bg-gray-500">重置</button>
+                            </div>
+                            <div class="flex flex-wrap gap-2 py-1">
+                                <button onclick="insertTag('div')" class="tag-btn">div</button>
+                                <button onclick="insertTag('h1')" class="tag-btn">h1</button>
+                                <button onclick="insertTag('p')" class="tag-btn">p</button>
+                                <button onclick="insertTag('button')" class="tag-btn">button</button>
+                                <button onclick="insertTag('img')" class="tag-btn">img</button>
+                                <button onclick="insertTag('a')" class="tag-btn">a</button>
+                                <button onclick="insertStyleBlock()" class="tag-btn bg-indigo-700">style</button>
+                            </div>
+                        </div>
+                        <textarea id="code-input" class="code-editor flex-1 p-4 rounded-b-lg outline-none resize-none text-sm" spellcheck="false">
+<style>
+  .card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  h1 { color: #3b82f6; }
+</style>
+
+<div class="card">
+  <h1>你好，世界！</h1>
+  <p>試著使用調整器產生的 CSS 來裝飾我。</p>
+</div></textarea>
+                    </div>
+                    <div class="flex flex-col">
+                        <div class="bg-gray-200 text-gray-700 px-4 py-2 text-sm rounded-t-lg">即時預覽</div>
+                        <iframe id="preview" class="preview-window flex-1 rounded-b-lg"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="bg-gray-900 text-white py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="mb-4">© 2024 WebMaster 教學平台</p>
+        </div>
+    </footer>
+
+    <script>
+        // 教學內容資料庫
+        const lessons = {
+            'intro': `
+                <h2 class="text-3xl font-bold mb-6 text-gray-900">HTML 與 CSS 的基礎概念</h2>
+                <p class="mb-4">HTML 是用於描述網頁結構的語言。CSS 則負責視覺表現。</p>
+                <pre class="bg-gray-100 text-sm"><code>&lt;h1&gt;這是標題&lt;/h1&gt;</code></pre>
+                <p class="mt-4 text-gray-600">HTML 定義了網頁的內容，如標題、段落、圖片等；CSS 則透過樣式規則來美化這些內容。</p>
+            `,
+            'html-tags': `
+                <h2 class="text-3xl font-bold mb-6 text-gray-900">HTML 常用核心標籤</h2>
+                <ul class="space-y-4">
+                    <li class="flex items-start">
+                        <span class="bg-blue-100 text-blue-600 font-bold px-2 py-1 rounded mr-3">&lt;div&gt;</span>
+                        <div><strong>容器：</strong>網頁中最常用的佈局元素。</div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="bg-blue-100 text-blue-600 font-bold px-2 py-1 rounded mr-3">&lt;h1-h6&gt;</span>
+                        <div><strong>標題：</strong>從大到小的各級標題。</div>
+                    </li>
+                </ul>
+            `,
+            'css-box': `
+                <h2 class="text-3xl font-bold mb-6 text-gray-900">CSS 盒子模型</h2>
+                <p class="mb-4">包含 Margin, Border, Padding, Content。這決定了元素在頁面上佔據的實際空間。</p>
+                <div class="bg-gray-100 p-4 border rounded">內邊距 (Padding) 是內容與邊框之間的空間。</div>
+            `,
+            'flexbox': `
+                <h2 class="text-3xl font-bold mb-6 text-gray-900">Flexbox 佈局</h2>
+                <p class="mb-4">現代排版的利器，可以輕鬆對齊元素。</p>
+                <pre class="bg-gray-100 text-sm"><code>display: flex;\njustify-content: center;</code></pre>
+            `
+        };
+
+        const codeInput = document.getElementById('code-input');
+        const preview = document.getElementById('preview');
+        const visualTarget = document.getElementById('visual-target');
+        const generatedCss = document.getElementById('generated-css');
+        const contentArea = document.getElementById('content-area'); // 獲取 content-area
+
+        // CSS 互動調整器邏輯
+        function updateVisual() {
+            if (!visualTarget) return;
+            const bg = document.getElementById('adj-bg').value;
+            const radius = document.getElementById('adj-radius').value;
+            const shadow = document.getElementById('adj-shadow').value;
+            const opacity = document.getElementById('adj-opacity').value;
+
+            // 套用樣式
+            visualTarget.style.backgroundColor = bg;
+            visualTarget.style.borderRadius = radius;
+            visualTarget.style.boxShadow = shadow;
+            visualTarget.style.opacity = opacity;
+
+            // 更新代碼文字
+            generatedCss.textContent = `.box {
+  background-color: ${bg};
+  border-radius: ${radius};
+  box-shadow: ${shadow};
+  opacity: ${opacity};
+}`;
+        }
+
+        // 更新預覽功能
+        function updatePreview() {
+            const content = codeInput.value;
+            const doc = preview.contentDocument || preview.contentWindow.document;
+            doc.open();
+            doc.write(`<!DOCTYPE html><html><head><style>body { font-family: sans-serif; padding: 20px; }</style></head><body>${content}</body></html>`);
+            doc.close();
+        }
+
+        function insertTag(tag) {
+            const text = `<${tag}>內容</${tag}>`;
+            insertAtCursor(text);
+        }
+
+        function insertStyleBlock() {
+            const styleTemplate = `\n<style>\n  .box {\n    color: red;\n  }\n</style>\n`;
+            insertAtCursor(styleTemplate);
+        }
+
+        function insertAtCursor(text) {
+            const start = codeInput.selectionStart;
+            const end = codeInput.selectionEnd;
+            const value = codeInput.value;
+            codeInput.value = value.substring(0, start) + text + value.substring(end);
+            codeInput.selectionStart = codeInput.selectionEnd = start + text.length;
+            codeInput.focus();
+            updatePreview();
+        }
+
+        function showLesson(id) {
+            // 修正：檢查 contentArea 是否存在
+            if (contentArea) {
+                contentArea.innerHTML = lessons[id];
+            }
+            document.querySelectorAll('.sidebar-link').forEach(btn => btn.classList.remove('active', 'bg-blue-600', 'text-white'));
+            
+            // 使用 event 對象或傳遞 element 來標記活性
+            if (window.event && window.event.currentTarget) {
+                window.event.currentTarget.classList.add('active', 'bg-blue-600', 'text-white');
+            }
+        }
+
+        function resetCode() {
+            codeInput.value = `<style>\n  .card {\n    background: white;\n    padding: 20px;\n    border-radius: 10px;\n    box-shadow: 0 4px 6px rgba(0,0,0,0.1);\n    text-align: center;\n  }\n  h1 { color: #3b82f6; }\n</style>\n\n<div class="card">\n  <h1>你好，世界！</h1>\n  <p>試著使用調整器產生的 CSS 來裝飾我。</p>\n</div>`;
+            updatePreview();
+        }
+
+        codeInput.addEventListener('input', updatePreview);
+        window.onload = () => {
+            updatePreview();
+            updateVisual();
+        };
+    </script>
+</body>
+</html>
